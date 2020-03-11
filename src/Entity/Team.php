@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+/*
+ * Class Team
+ * @package App\Entity
+ */
 class Team
 {
     private string $name;
