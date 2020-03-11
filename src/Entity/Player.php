@@ -121,6 +121,19 @@ class Player
     }
 
     /**
+     * @return string
+     */
+    public function getRedCard(): string
+    {
+        return $this->redCards;
+    }
+
+    public function addRedCard(): void
+    {
+        $this->redCards += 1;
+    }
+
+    /**
      * @return int
      */
     public function getInMinute(): int

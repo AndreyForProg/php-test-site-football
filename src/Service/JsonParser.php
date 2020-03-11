@@ -2,15 +2,30 @@
 
 namespace App\Service;
 
+/**
+ * Class JsonParser
+ * @package App\Service
+ */
 class JsonParser
 {
+    /**
+     * @var string
+     */
     private string $sourceDir;
 
+    /**
+     * JsonParser constructor.
+     * @param string $sourceDir
+     */
     public function __construct(string $sourceDir)
     {
         $this->sourceDir = rtrim($sourceDir, DIRECTORY_SEPARATOR);
     }
 
+    /**
+     * @param string $matchId
+     * @return array
+     */
     public function parse(string $matchId): array
     {
         $path = $this->buildPath($matchId);
@@ -18,6 +33,10 @@ class JsonParser
         return $this->load($path);
     }
 
+    /**
+     * @param string $matchId
+     * @return string
+     */
     private function buildPath(string $matchId): string
     {
         return implode(
@@ -29,6 +48,10 @@ class JsonParser
         );
     }
 
+    /**
+     * @param string $path
+     * @return array
+     */
     private function load(string $path): array
     {
         $this->assertFileExists($path);
@@ -39,6 +62,10 @@ class JsonParser
         );
     }
 
+    /**
+     * @param string $path
+     * @return void
+     */
     private function assertFileExists(string $path): void
     {
         if (!file_exists($path)) {
@@ -51,6 +78,12 @@ class JsonParser
         }
     }
 
+    /**
+     * @param string $path
+     * @param string $content
+     * @return array
+     * @throws \Exception
+     */
     private function prepareResult(string $path, string $content): array
     {
         try {

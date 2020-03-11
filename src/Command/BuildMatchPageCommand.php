@@ -16,13 +16,42 @@ class BuildMatchPageCommand extends Command
 {
     protected static $defaultName = 'app:build-match-page';
 
+    /**
+     * @var JsonParser;
+     */
     private JsonParser $jsonParser;
+
+    /**
+     * @var matchBuilder;
+     */
     private MatchBuilder $matchBuilder;
+
+    /**
+     * @var htmlSaver;
+     */
     private HtmlSaver $htmlSaver;
+
+    /**
+     * @var input;
+     */
     private InputInterface $input;
+
+    /**
+     * @var output;
+     */
     private OutputInterface $output;
+
+    /**
+     * @var io;
+     */
     private SymfonyStyle $io;
 
+    /**
+     * BuildMatchPageCommand constructor.
+     * @param JsonParser $jsonParser
+     * @param MatchBuilder $matchBuilder
+     * @param HtmlSaver $htmlSaver
+     */
     public function __construct(JsonParser $jsonParser, MatchBuilder $matchBuilder, HtmlSaver $htmlSaver)
     {
         parent::__construct(null);
@@ -38,6 +67,10 @@ class BuildMatchPageCommand extends Command
         $this->addArgument('id', InputArgument::OPTIONAL, 'Match Id');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
@@ -46,6 +79,10 @@ class BuildMatchPageCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $matchId = $this->extractMatchId();
@@ -58,6 +95,9 @@ class BuildMatchPageCommand extends Command
         return 0;
     }
 
+    /**
+     * @return string
+     */
     private function extractMatchId(): string
     {
         $matchId = $this->input->getArgument('id');
@@ -68,6 +108,9 @@ class BuildMatchPageCommand extends Command
         return $this->askMatchId();
     }
 
+    /**
+     * @return string
+     */
     private function askMatchId(): string
     {
         $helper = $this->getHelper('question');

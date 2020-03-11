@@ -2,22 +2,54 @@
 
 namespace App\Entity;
 
-/*
+/**
  * Class Team
  * @package App\Entity
  */
 class Team
 {
+    /**
+     * @var string
+     */
     private string $name;
+
+    /**
+     * @var string
+     */
     private string $country;
+
+    /**
+     * @var string
+     */
     private string $logo;
+
     /**
      * @var Player[]
      */
+
+    /**
+     * @var array
+     */
     private array $players;
+
+    /**
+     * @var string
+     */
     private string $coach;
+
+    /**
+     * @var int
+     */
     private int $goals;
 
+    /**
+     * Player constructor.
+     * @param string $name
+     * @param string $country
+     * @param string $logo
+     * @param array $players
+     * @param string $coach
+     */
     public function __construct(string $name, string $country, string $logo, array $players, string $coach)
     {
         $this->assertCorrectPlayers($players);
@@ -30,16 +62,25 @@ class Team
         $this->goals = 0;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getCountry(): string
     {
         return $this->country;
     }
 
+    /**
+     * @return string
+     */
     public function getLogo(): string
     {
         return $this->logo;
@@ -55,11 +96,18 @@ class Team
         });
     }
 
+    /**
+     * @return array
+     */
     public function getPlayers(): array
     {
         return $this->players;
     }
 
+    /**
+     * @param int $number
+     * @return Player
+     */
     public function getPlayer(int $number): Player
     {
         foreach ($this->players as $player) {
@@ -77,6 +125,9 @@ class Team
         );
     }
 
+    /**
+     * @return string
+     */
     public function getCoach(): string
     {
         return $this->coach;
@@ -87,12 +138,17 @@ class Team
         $this->goals += 1;
     }
 
+    /**
+     * @return int
+     */
     public function getGoals(): int
     {
         return $this->goals;
     }
 
-
+    /**
+     * @param array $players
+     */
     private function assertCorrectPlayers(array $players)
     {
         foreach ($players as $player) {

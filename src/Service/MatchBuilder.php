@@ -9,6 +9,12 @@ use App\Entity\Team;
 
 class MatchBuilder
 {
+    /**
+     * @param string $id
+     * @param array $logs
+     * @return Match
+     * @throws \Exception
+     */
     public function build(string $id, array $logs): Match
     {
         $event = $this->extractStartMatchEvent($logs);
@@ -25,6 +31,11 @@ class MatchBuilder
         return $match;
     }
 
+    /**
+     * @param array $logs
+     * @return array
+     * @throws \Exception
+     */
     private function extractStartMatchEvent(array $logs): array
     {
         foreach ($logs as $event) {
@@ -41,16 +52,29 @@ class MatchBuilder
         throw new \Exception('Start match event not found.');
     }
 
+    /**
+     * @param array $startMatchEvent
+     * @return \DateTime
+     * @throws \Exception
+     */
     private function buildMatchDateTime(array $startMatchEvent): \DateTime
     {
         return new \DateTime($startMatchEvent['details']['dateTime']);
     }
 
+    /**
+     * @param array $startMatchEvent
+     * @return string
+     */
     private function extractTournament(array $startMatchEvent): string
     {
         return $startMatchEvent['details']['tournament'];
     }
 
+    /**
+     * @param array $startMatchEvent
+     * @return Stadium
+     */
     private function buildStadium(array $startMatchEvent): Stadium
     {
         $stadiumInfo = $startMatchEvent['details']['stadium'];
@@ -58,16 +82,29 @@ class MatchBuilder
         return new Stadium($stadiumInfo['country'], $stadiumInfo['city'], $stadiumInfo['stadium']);
     }
 
+    /**
+     * @param array $startMatchEvent
+     * @return Team
+     */
     private function buildHomeTeam(array $startMatchEvent): Team
     {
         return $this->buildTeam($startMatchEvent, 1);
     }
 
+    /**
+     * @param array $startMatchEvent
+     * @return Team
+     */
     private function buildAwayTeam(array $startMatchEvent): Team
     {
         return $this->buildTeam($startMatchEvent, 2);
     }
 
+    /**
+     * @param array $event
+     * @param string $teamNumber
+     * @return Team
+     */
     private function buildTeam(array $event, string $teamNumber): Team
     {
         $teamInfo = $event['details']["team$teamNumber"];
@@ -79,6 +116,11 @@ class MatchBuilder
         return new Team($teamInfo['title'], $teamInfo['country'], $teamInfo['logo'], $players, $teamInfo['coach']);
     }
 
+    /**
+     * @param Match $match
+     * @param array $logs
+     * @throws \Exception
+     */
     private function processLogs(Match $match, array $logs): void
     {
         $period = 0;
@@ -137,6 +179,11 @@ class MatchBuilder
         }
     }
 
+    /**
+     * @param int $period
+     * @param array $event
+     * @return string
+     */
     private function buildMinuteString(int $period, array $event): string
     {
         $time = $event['time'];
@@ -146,6 +193,10 @@ class MatchBuilder
         return $additionalTime > 0 ? "$periodEnd + $additionalTime" : $time;
     }
 
+    /**
+     * @param array $event
+     * @return string
+     */
     private function buildMessageType(array $event): string
     {
         switch ($event['type']) {
@@ -164,6 +215,12 @@ class MatchBuilder
         }
     }
 
+    /**
+     * @param Team $team
+     * @param array $players
+     * @param int $minute
+     * @throws \Exception
+     */
     private function goToPlay(Team $team, array $players, int $minute): void
     {
         foreach ($players as $number) {
@@ -171,6 +228,10 @@ class MatchBuilder
         }
     }
 
+    /**
+     * @param Team $team
+     * @param int $minute
+     */
     private function goToBenchAllPlayers(Team $team, int $minute)
     {
         foreach ($team->getPlayersOnField() as $player) {
@@ -178,6 +239,12 @@ class MatchBuilder
         }
     }
 
+    /**
+     * @param Match $match
+     * @param string $name
+     * @return Team
+     * @throws \Exception
+     */
     private function getTeamByName(Match $match, string $name): Team
     {
         if ($match->getHomeTeam()->getName() === $name) {
