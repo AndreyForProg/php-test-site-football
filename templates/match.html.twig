@@ -105,16 +105,30 @@
             </div>
         </div>
         <div class="card-body">
+            {{ render.renderPlayers(team.players|filter(item => item.position == "В"), "Вратари") }}
+            {{ render.renderPlayers(team.players|filter(item => item.position == "З"), "Защитники") }}
+            {{ render.renderPlayers(team.players|filter(item => item.position == "П"), "Полузащитники") }}
+            {{ render.renderPlayers(team.players|filter(item => item.position == "Н"), "Нападающие") }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro renderPlayers(players, title) %}
+            <p>
+                <strong>{{ title }}</strong>
+            </p>
             <table class="table table">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Имя</th>
-                    <th></th>
+                    <th>Голы</th>
+                    <th>Карточки</th>
+                    <th>Время</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for player in team.players %}
+                {% for player in players %}
                     <tr>
                         <td>
                             {{ player.number }}
@@ -123,15 +137,29 @@
                             {{ player.name }}
                         </td>
                         <td>
-                            {{ player.playTime }}’
+                            {% if player.goals > 0 %}
+                                {{ player.goals }}
+                            {% else %}
+                                -
+                            {% endif %}
                         </td>
                         <td>
-                            {{ player.position }}’
+                            {% if player.yellowCards > 0 %}
+                                {% for number in 1..player.yellowCards %}
+                                    <img src="https://www.soccer.ru/sites/all/themes/newtheme/images/events-icons/card.png">
+                                {% endfor %}
+                            {% endif %}
+                            {% if player.redCards > 0 %}
+                                {% for number in 1..player.redCards %}
+                                    <img src="https://www.soccer.ru/sites/all/themes/newtheme/images/events-icons/yellow_red.png">#}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ player.playTime }}’
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
 {% endmacro %}
