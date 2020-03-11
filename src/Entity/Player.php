@@ -46,13 +46,15 @@ class Player
         return $this->playStatus === self::PLAY_PLAY_STATUS;
     }
 
+    // Time when player became to play include first minute
     public function getPlayTime(): int
     {
         if(!$this->outMinute) {
             return 0;
         }
 
-        return $this->outMinute - $this->inMinute;
+        $inMinute = $this->inMinute - 1;
+        return $this->outMinute - $inMinute;
     }
 
     public function goToPlay(int $minute): void
